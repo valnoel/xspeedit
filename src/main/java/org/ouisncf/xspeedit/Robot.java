@@ -1,8 +1,11 @@
 package org.ouisncf.xspeedit;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+
+import org.ouisncf.xspeedit.Article.ArticleComparator;
 
 /**
  * Implementation of the XSpeedIt robot
@@ -11,6 +14,49 @@ import java.util.Objects;
  *
  */
 public class Robot {
+
+	/**
+	 * Optimizes the articles order to fit to the box capacity, and minimize the number of
+	 * used boxes.
+	 *
+	 * @param articles
+	 * 	The articles list to process
+	 * @return the optimized articles list for packaging
+	 */
+	public static List<Article> getOptimizedArticlesOrder(final List<Article> articles) {
+
+		// Sort the articles by size
+		final List<Article> sortedArticles = new ArrayList<Article>(articles);
+		sortedArticles.sort(new ArticleComparator());
+
+		// Reset managed articles list
+		final List<Article> optimizedArticles = new ArrayList<Article>();
+
+		while(!sortedArticles.isEmpty()) {
+
+			// Get the biggest article of the sorted list and move it the new list
+			final Article biggestArticle = sortedArticles.remove(sortedArticles.size() - 1);
+			optimizedArticles.add(biggestArticle);
+
+			// Parse the remaining article sizes to find the article that fits the most to
+			// the remaining space left by the previous biggest article into the box.
+			final int remaingSize = Box.MAX_CAPACITY - biggestArticle.getSize();
+			Article previousArticle = null;
+			for (Article article : sortedArticles) {
+				if(article.getSize() > remaingSize) {
+					if(previousArticle != null) {
+						// An article fits the remaining space in box capacity, let's move
+						// it from the sorted list to the optimized list!
+						sortedArticles.remove(previousArticle);
+						optimizedArticles.add(previousArticle);
+					}
+					break;
+				}
+				previousArticle = article;
+			}
+		}
+		return optimizedArticles;
+	}
 
 	/**
 	 * List of the output filled boxes

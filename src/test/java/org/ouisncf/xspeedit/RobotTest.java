@@ -34,14 +34,25 @@ public class RobotTest {
 		Assert.assertEquals("", robot.getStringContent());
 	}
 
+	@Test
+	public void articlesOrderOptimization() {
+		Assert.assertEquals("163841689525773", Article.getListStringContent(articles));
+		Assert.assertEquals("918281737364655", Article.getListStringContent(Robot.getOptimizedArticlesOrder(articles)));
 	}
 
 	@Test
 	public void packaging() {
 		final Robot robot = new Robot();
+
+		// standard process
 		robot.processPackaging(articles);
 		Assert.assertEquals(10, robot.getNumberOfUsedBoxes());
 		Assert.assertEquals("163/8/41/6/8/9/52/5/7/73", robot.getStringContent());
+
+		// sort articles for optimization before process
+		robot.processPackaging(Robot.getOptimizedArticlesOrder(articles));
+		Assert.assertEquals(8, robot.getNumberOfUsedBoxes());
+		Assert.assertEquals("91/82/81/73/73/64/6/55", robot.getStringContent());
 	}
 
 }

@@ -1,5 +1,8 @@
 package org.ouisncf.xspeedit;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,6 +44,38 @@ public class ArticleTest {
 	public void getSize() {
 		final Article article = new Article(5);
 		Assert.assertEquals(5, article.getSize());
+	}
+
+	@Test
+	public void comparator() {
+		List<Article> articles = Arrays.asList(new Article(1),
+				new Article(6),
+				new Article(3));
+		articles.sort(new Article.ArticleComparator());
+		Assert.assertEquals(1, articles.get(0).getSize());
+		Assert.assertEquals(3, articles.get(1).getSize());
+		Assert.assertEquals(6, articles.get(2).getSize());
+	}
+
+	@Test
+	public void listMethods() {
+		List<Article> articles = Arrays.asList(new Article(1),
+				new Article(6),
+				new Article(3),
+				new Article(8),
+				new Article(4),
+				new Article(1),
+				new Article(6),
+				new Article(8),
+				new Article(9),
+				new Article(5),
+				new Article(2),
+				new Article(5),
+				new Article(7),
+				new Article(7),
+				new Article(3));
+
+		Assert.assertEquals("163841689525773", Article.getListStringContent(articles));
 	}
 
 }
