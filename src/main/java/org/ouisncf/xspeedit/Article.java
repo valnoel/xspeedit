@@ -25,6 +25,17 @@ public class Article {
 	}
 
 	/**
+	 * Computes the sum of the sizes of an articles list and returns the result.
+	 *
+	 * @param articles
+	 * 	The articles list to process
+	 * @return the articles total size
+	 */
+	public static int getListTotalSize(final List<Article> articles) {
+		return articles.stream().mapToInt((a) -> a.getSize()).sum();
+	}
+
+	/**
 	 * Formats the sizes of an articles list as a character string, and returns it
 	 * as a {@link String}.
 	 *

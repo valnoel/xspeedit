@@ -42,8 +42,19 @@ public class XSpeedItApplication {
 				.collect(Collectors.toList());
 
 		final Robot robot = new Robot();
+		final int minBoxesNbResult = (int) Math.ceil((double)Article.getListTotalSize(articles) / Box.MAX_CAPACITY);
+
+		System.out.println("Input articles: " + Article.getListStringContent(articles));
+		System.out.println("Theorical minimum number of boxes: " + minBoxesNbResult);
+
+		// Standard process
 		System.out.print(" - Linear process:\t");
 		robot.processPackaging(articles);
+		System.out.println(robot.getStringContent() + " => Number of boxes: " + robot.getNumberOfUsedBoxes());
+
+		// Optimized process
+		System.out.print(" - Optimized process:\t");
+		robot.processPackaging(Robot.getOptimizedArticlesOrder(articles));
 		System.out.println(robot.getStringContent() + " => Number of boxes: " + robot.getNumberOfUsedBoxes());
 	}
 

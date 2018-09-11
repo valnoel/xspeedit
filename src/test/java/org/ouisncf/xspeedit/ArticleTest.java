@@ -75,6 +75,7 @@ public class ArticleTest {
 				new Article(7),
 				new Article(3));
 
+		Assert.assertEquals(75, Article.getListTotalSize(articles));
 		Assert.assertEquals("163841689525773", Article.getListStringContent(articles));
 	}
 
